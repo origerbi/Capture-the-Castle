@@ -5,10 +5,8 @@ using UnityEngine;
 public class Spawner : MonoBehaviour // ALL WORKS DO NOT TOUCH!!!
 {
     // Constants
-    private Vector3 PLAYERATTACKSPAWN = new Vector3(-103f, 39.3f, 576f);
-    private Vector3 PLAYERDEFENSESPAWN = new Vector3(-168.5f, 34.4f, 447.2f);
-    private Vector3 ATTACKERSPAWN = new Vector3(-114.65f, 37.8f, 579.5f);
-    private Vector3 DEFENDERSPAWN = new Vector3(-168.5f, 34.4f, 447.2f);
+    [SerializeField] private Vector3 PLAYERATTACKSPAWN = new Vector3(-103f, 39.3f, 576f);
+    [SerializeField] private Vector3 PLAYERDEFENSESPAWN = new Vector3(-168.5f, 34.4f, 447.2f);
 
     // Fields
     public static Knight.ROLE playerTeam;

@@ -7,9 +7,11 @@ public class Selector : MonoBehaviour
     // Fields
     private string selectableTag = "Selectable";
     private NPC selection;
+    private Material lastSelectionMaterial;
 
     public Player player;
     public GameObject commandMessage, commandsUI;
+    public Material enemyMaterial, allymaterial;
 
     // Methods
     // Update is called once per frame
@@ -21,11 +23,12 @@ public class Selector : MonoBehaviour
 
         if (selection != null)
         {
-            renderer = selection.transform.GetComponent<SkinnedMeshRenderer>();
-            SetMaterial(renderer.materials[0]);
+            renderer = selection.transform.GetComponentInChildren<SkinnedMeshRenderer>();
+            SetMaterial(lastSelectionMaterial);
             commandMessage.SetActive(false);
 
             selection = null;
+            lastSelectionMaterial = null;
         }
 
         // Validates any transform is hit by raycast
@@ -41,13 +44,13 @@ public class Selector : MonoBehaviour
         {
             // Validates the knight has a renderer
             selection = npc;
-            renderer = selection.transform.GetComponent<SkinnedMeshRenderer>();
+            renderer = selection.transform.GetComponentInChildren<SkinnedMeshRenderer>();
             if (renderer == null)
                 return;
 
             if (selection.team == player.team)
             {
-                SetMaterial(renderer.materials[1]); // Ally material
+                SetMaterial(allymaterial); // Ally material
                 // 
                 commandMessage.SetActive(true);
 
@@ -56,7 +59,7 @@ public class Selector : MonoBehaviour
             }
             else
             {
-                SetMaterial(renderer.materials[2]); // enemy material
+                SetMaterial(enemyMaterial); // enemy material
                 //
                 commandsUI.SetActive(false);
                 commandMessage.SetActive(false);
@@ -66,14 +69,9 @@ public class Selector : MonoBehaviour
 
     public void SetMaterial(Material material)
     {
-        SkinnedMeshRenderer childRenderer;
-
-        for (int i = 0; i < selection.transform.childCount; i++)
-        {
-            childRenderer = selection.transform.GetChild(i).GetComponent<SkinnedMeshRenderer>();
-            if (childRenderer != null)
-                childRenderer.material = material;
-        }
+        SkinnedMeshRenderer renderer = selection.transform.GetComponentInChildren<SkinnedMeshRenderer>();
+        lastSelectionMaterial = renderer.material;
+        renderer.material = material;
     }
 
     public void HandleKeyboardInput()

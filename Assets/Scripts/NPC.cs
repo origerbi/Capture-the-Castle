@@ -16,7 +16,6 @@ public class NPC : Knight
 
     public Animator animator;
     public NavMeshAgent agent;
-    public new SkinnedMeshRenderer renderer;
     public Transform fleeingPoint;
     public LayerMask enemyLayers;
 
@@ -24,7 +23,7 @@ public class NPC : Knight
     // Start is called before the first frame update
     public new void Start()
     {
-        List<AudioSource> sounds = new List<AudioSource>(GetComponents<AudioSource>());
+        List<AudioSource> sounds = new List<AudioSource>(GetComponentsInChildren<AudioSource>());
         string attackSoundName = name.Contains("Guard") ? "Punch" : "SwordSwish";
 
         base.Start();
@@ -37,9 +36,6 @@ public class NPC : Knight
         deathSound = sounds.Find(sound => sound.clip.name == "Death");
 
         speed = 3f;
-
-        animator = GetComponent<Animator>();
-        agent = GetComponent<NavMeshAgent>();
 
         damageStopwatch.Start();
     }
@@ -57,8 +53,9 @@ public class NPC : Knight
         if (nearestEnemy == null)
             return;
 
-        if (animator.GetInteger("State") == 0) // charging
-            agent.SetDestination(nearestEnemy.transform.position);
+        if (agent.isOnNavMesh)
+            if (animator.GetInteger("State") == 0) // charging
+                agent.SetDestination(nearestEnemy.transform.position);
 
         float enemyDistance = Vector3.Distance(transform.position, nearestEnemy.transform.position);
         if (enemyDistance <= 2.5f)

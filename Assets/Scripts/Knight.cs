@@ -23,7 +23,7 @@ public class Knight : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
-        AudioSource[] sounds = GetComponents<AudioSource>();
+        AudioSource[] sounds = GetComponentsInChildren<AudioSource>();
 
         chargeSound = new List<AudioSource>(sounds).Find(sound => sound.clip.name == "Charge");
 

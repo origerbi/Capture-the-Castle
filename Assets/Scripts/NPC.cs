@@ -152,7 +152,7 @@ public class NPC : Knight
     {
         if (!isDead)
         {
-            animator.SetInteger("State", name.Contains("Guard") ? 4 : 3);
+            animator.SetInteger("State", 4);
 
             agent.enabled = true;
             fleeSound.Play();
@@ -167,7 +167,7 @@ public class NPC : Knight
         Collider[] hitEnemies = Physics.OverlapSphere(transform.position, 2.5f, enemyLayers);
         if (!isDead)
         {
-            animator.SetInteger("State", name.Contains("Guard") ? Random.Range(1, 3) : 1);
+            animator.SetInteger("State", Random.Range(1, 3));
 
             agent.enabled = false;
             if (!attackSound.isPlaying)
@@ -195,7 +195,7 @@ public class NPC : Knight
 
         if (!isDead)
         {
-            animator.SetInteger("State", name.Contains("Guard") ? 3 : 2);
+            animator.SetInteger("State",  3 );
             if (!painSound.isPlaying)
                 painSound.Play();
         }

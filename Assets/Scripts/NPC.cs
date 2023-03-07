@@ -167,7 +167,7 @@ public class NPC : Knight
         Collider[] hitEnemies = Physics.OverlapSphere(transform.position, 2.5f, enemyLayers);
         if (!isDead)
         {
-            animator.SetInteger("State", Random.Range(1, 3));
+            animator.SetInteger("State", 1);
 
             agent.enabled = false;
             if (!attackSound.isPlaying)

@@ -66,23 +66,17 @@ public class NPC : Knight
                     StartCoroutine(Attack());
             }
             enemyDistance = Vector3.Distance(transform.position, nearestEnemy.transform.position);
-            if (enemyDistance <= 3f)
-            {
-                if (nearestEnemy == GameObject.Find("Player").GetComponent<Knight>())
-                    GameObject.Find("Player").GetComponent<Player>().PlayerDamage(PLAYERDAMAGE);
-                else
-                    nearestEnemy.TakeDamage(ENEMYDAMAGE);
-            }
+        }    
 
-            //{
-            //    //if (nearestEnemy.gameObject == GameObject.Find("Player"))
-            //    //{
-            //    //    GameObject.Find("Player").GetComponent<Player>().TakeDamage(10);
-            //    //}
-            //    //else nearestEnemy.GetComponent<NPC>().TakeDamage(10);
-            //}
-            //TO DO: do damage to nearest enemy
-        }
+
+        //{
+        //    //if (nearestEnemy.gameObject == GameObject.Find("Player"))
+        //    //{
+        //    //    GameObject.Find("Player").GetComponent<Player>().TakeDamage(10);
+        //    //}
+        //    //else nearestEnemy.GetComponent<NPC>().TakeDamage(10);
+        //}
+        //TO DO: do damage to nearest enemy
         //else if (Time.time >= nextTimeToHit)
         //{
         //    nextTimeToHit = Time.time + (1 / hitRate);
@@ -131,8 +125,6 @@ public class NPC : Knight
             if (nearestEnemy != null)
                 agent.SetDestination(nearestEnemy.transform.position);
         }
-        else
-            StartCoroutine(Die());
     }
 
     public void Halt()
@@ -145,8 +137,6 @@ public class NPC : Knight
             chargeSound.Stop();
             fleeSound.Stop();
         }
-        else
-            StartCoroutine(Die());
     }
     public void Flee()
     {
@@ -159,8 +149,6 @@ public class NPC : Knight
 
             agent.SetDestination(fleeingPoint.position);
         }
-        else
-            StartCoroutine(Die());
     }
     public IEnumerator Attack()
     {
@@ -173,6 +161,9 @@ public class NPC : Knight
             if (!attackSound.isPlaying)
                 attackSound.Play();
 
+            if (nearestEnemy == GameObject.Find("Player").GetComponent<Knight>())
+                GameObject.Find("Player").GetComponent<Player>().PlayerDamage(PLAYERDAMAGE);
+            
             foreach (Collider enemy in hitEnemies)
             {
                 enemy.GetComponent<Knight>().TakeDamage(10);
@@ -181,30 +172,29 @@ public class NPC : Knight
             yield return new WaitForSeconds(2f);
             Charge();
         }
-        else
-            StartCoroutine(Die());
     }
 
     public override void TakeDamage(int damage)
     {
+        if (isDead) return;
         if (damageStopwatch.Elapsed.TotalSeconds >= 1)
         {
             base.TakeDamage(damage);
-            damageStopwatch.Restart();
-        }
-
-        if (!isDead)
-        {
-            animator.SetInteger("State",  3 );
+            UnityEngine.Debug.Log("someone is taking damage");
+            animator.SetInteger("State", 3);
             if (!painSound.isPlaying)
                 painSound.Play();
+            damageStopwatch.Restart();
+            if(isDead)
+            {
+                StartCoroutine(Die());
+            }
         }
-        else
-            StartCoroutine(Die());
     }
 
     public IEnumerator Die()
     {
+        UnityEngine.Debug.Log(name + " someone died");
         animator.SetInteger("State", -1);
 
         damageStopwatch.Stop();
@@ -217,6 +207,6 @@ public class NPC : Knight
 
         yield return new WaitForSeconds(2f);
 
-        Destroy(gameObject);
+       // Destroy(gameObject);
     }
 }

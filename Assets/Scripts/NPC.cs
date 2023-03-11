@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class NPC : Knight
 {
-    public const int ENEMYDAMAGE = 10, PLAYERDAMAGE = 10;
+    public const int ENEMYDAMAGE = 5, PLAYERDAMAGE = 7;
 
     // Fields
     private Knight nearestEnemy;

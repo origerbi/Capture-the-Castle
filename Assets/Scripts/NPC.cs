@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class NPC : Knight
 {
-    public const int ENEMYDAMAGE = 5, PLAYERDAMAGE = 7;
+    public const int ENEMYDAMAGE = 20, PLAYERDAMAGE = 7;
 
     // Fields
     private Knight nearestEnemy;
@@ -185,7 +185,7 @@ public class NPC : Knight
             StartCoroutine(Die());
     }
 
-    public void TakeDamage(int damage)
+    public override void TakeDamage(int damage)
     {
         if (damageStopwatch.Elapsed.TotalSeconds >= 1)
         {

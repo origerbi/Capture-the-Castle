@@ -27,7 +27,7 @@ public class Knight : MonoBehaviour
 
         chargeSound = new List<AudioSource>(sounds).Find(sound => sound.clip.name == "Charge");
 
-        health = maxHealth = 200;
+        health = maxHealth = 100;
         angularSpeed = 300f;
         rotationAboutX = rotationAboutY = 0f;
         lastPosition = Vector3.zero;
@@ -48,7 +48,7 @@ public class Knight : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage)
     {
         health -= damage;
         healthBar.value = health < 0 ? 0 : health;
